@@ -2,11 +2,11 @@ import {PrismaClient} from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function GET(req: Request, {params}: { params: { id: string } }) {
+export async function GET(req: Request, {params}: { params: { id: number } }) {
     console.log('Début de la requête GET pour la série avec ID:', params.id);
 
     // Vérifie si l'ID est bien présent
-    if (!params.id || isNaN(parseInt(params.id))) {
+    if (!params.id || isNaN(params.id)) {
         return new Response(
             JSON.stringify({message: 'ID invalide.'}),
             {status: 400}
@@ -17,7 +17,7 @@ export async function GET(req: Request, {params}: { params: { id: string } }) {
         // Cherche la série par son ID dans la base de données
         const serie = await prisma.series.findUnique({
             where: {
-                id: parseInt(params.id), // Recherche de la série par son ID
+                id: params.id, // Recherche de la série par son ID
             },
             include: {
                 tomes: true, // Inclut les tomes associés à la série
