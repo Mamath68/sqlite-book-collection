@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:db.sqlite"
+}
+
+model Series {
+  id              Int     @id @default(autoincrement())
+  name            String
+  author          String
+  original_author String?
+  illustrator     String?
+  editeur         String
+  img             String
+  type            String
+  genre           String
+  status_vo       String
+  status_vf       String
+  commentaire     String?
+  tomes           Tome[]
+}
+
+model Tome {
+  id                  Int      @id @default(autoincrement())
+  title               String
+  volume              Int
+  img                 String
+  synopsis            String?
+  publishedAtInFrance DateTime
+  publishedAtInOC     DateTime
+  seriesId            Int
+  possedee            Boolean?
+  series              Series   @relation(fields: [seriesId], references: [id], onDelete: Cascade)
+}
